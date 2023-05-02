@@ -1,0 +1,190 @@
+*{
+    padding: 0%;
+    margin: 0%;
+}
+button{
+    border: none;
+    outline: none;
+}
+body{
+    background-color: rgba(0, 255, 255, 0.177);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.contener{
+    width: 100%;
+}
+#toppage{
+    position: fixed;
+    background:linear-gradient(to right,#2d8bd7,#004763d5);
+    width: 100%;
+    margin: auto;
+    box-shadow: 2px 2px 10px #6083a8;
+    z-index: 1;
+}
+#Search{
+    display: flex;
+    padding: 17px;
+    width: 40%;
+    flex-flow: row;
+    justify-content: space-between;
+}
+#btn_search{    
+    width: 60%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+}
+#btn_search button:not(:hover){
+    transition: 0.4s;
+    width: 34px;
+    height: 32px;
+    border-radius: 30px;
+    margin: auto;
+    font-weight: 550;
+}
+#btn_search button:hover{
+    margin: auto;
+    transition: 0.3s;
+    width: 34px;
+    height: 32px;
+    background-color: #003b53c2;
+    font-weight: 550;
+    border-radius: 5px;
+    color: aliceblue;
+    transform: scale(1.09);
+    box-shadow: 2px 2px 10px #001a2d;
+}
+#Search input{
+    text-align: center;
+    border: none;
+    border-radius: 12px;
+    width: 40%;
+    height: 31px;
+    margin: auto;
+    font-size: 14px;
+    font-weight: 550px;
+}
+#Search input:focus{
+    transition: 0.4s;
+    border: none;
+    outline: none;
+    box-shadow: 2px 2px 10px #193358;
+}
+#pagedata{
+    width: 95%;
+    margin: auto;
+    padding-top: 8%;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.card{
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background:linear-gradient(#005ba5b3,#006769d7);
+    width: 28%;
+    margin: 10px;
+    box-shadow: 2px 2px 10px #006570;
+
+}
+#top_card{
+    display: flex;
+    text-align: center;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+#levet{
+    color:aliceblue;
+    width: 30%;
+    border-top-right-radius: 12px;
+}
+#date{
+    border-top-left-radius: 12px;
+    background-color: rgb(1, 108, 141);
+    color:aliceblue;
+    width: 70%;
+}
+#top_card button{
+    width: 30%;
+    margin: auto;
+    background-color: rgb(1, 68, 157);
+    color: antiquewhite;
+    height: 22px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+#top_card button:hover{
+    transition: 0.3s;
+    background-color: rgb(73, 192, 235);
+    box-shadow: 2px 2px 10px #006570;
+}
+#card_data h5,h4{
+    letter-spacing:0.2mm;
+    margin: 8px;
+    color: rgb(255, 255, 255);
+}
+#card_data h4:hover{
+    transition: 0.3s;
+    background-color: rgb(235, 219, 73);
+    color: #001a2d;
+}
+#btn_card{
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap-reverse;
+    justify-content: space-evenly;
+    margin-top: 25px;
+}
+#btn_card button{
+    height: 27px;
+}
+.WhatsApp_card{
+    background-color: rgb(24, 90, 46);
+    color: white;
+    width: 50%;
+    margin: auto;
+}
+.WhatsApp_card:hover{
+    transition: 0.4s;
+    background-color: rgb(6, 207, 6);
+}
+#done_card{
+    background-color: rgb(18, 61, 54);
+    color: white;
+    width: 25%;
+}
+#done_card:hover{
+    transition: 0.4s;
+    background-color: #01a169;
+}
+.delete_card{
+    background-color: rgb(255, 252, 252);
+    color: rgb(255, 0, 0);
+    width: 25%;
+    font-weight: 600;
+}
+.delete_card:hover{
+    transition: 0.4s;
+    background-color: red;
+    color: white;
+}
+#copy_card{
+    width:100%;
+    background-color: #a35100;
+    color: white;
+}
+#copy_card:hover{
+    transition: 0.4s;
+    background-color: #ff8000;
+}
+
+
+
+@media screen and (max-width:1000px){
+    *{
+        zoom: 95%;
+        font-size: 14px;
+      }
+}

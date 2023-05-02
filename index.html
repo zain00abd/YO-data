@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>OY Data</title>
+</head>
+
+<body>
+    <div class="contener">
+        <div id="toppage">
+            <div id="Search">
+                <input type="search" id="inp_search" placeholder="Search">
+                <div id="btn_search">
+                    <button id="kok" data-key="">A1</button>
+                    <button>A2</button>
+                    <button>B1</button>
+                    <button>B2</button>
+                    <button>C1</button>
+                    <button>C2</button>
+                </div>
+            </div>
+        </div>
+        <div id="pagedata">
+        </div>
+    </div>
+</body>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js";
+    import { getDatabase, update, set, ref, get, onChildAdded, onChildRemoved, push, child, remove } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-database.js";
+
+    var _0x1862 = ["\x41\x49\x7A\x61\x53\x79\x42\x68\x50\x42\x6C\x65\x72\x4D\x5A\x47\x50\x50\x6E\x39\x6D\x66\x59\x73\x5A\x59\x75\x49\x42\x48\x30\x73\x6A\x41\x63\x44\x6F\x42\x59","\x6F\x79\x2D\x67\x6F\x65\x74\x68\x65\x2E\x66\x69\x72\x65\x62\x61\x73\x65\x61\x70\x70\x2E\x63\x6F\x6D","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6F\x79\x2D\x67\x6F\x65\x74\x68\x65\x2D\x64\x65\x66\x61\x75\x6C\x74\x2D\x72\x74\x64\x62\x2E\x66\x69\x72\x65\x62\x61\x73\x65\x69\x6F\x2E\x63\x6F\x6D","\x6F\x79\x2D\x67\x6F\x65\x74\x68\x65","\x6F\x79\x2D\x67\x6F\x65\x74\x68\x65\x2E\x61\x70\x70\x73\x70\x6F\x74\x2E\x63\x6F\x6D","\x31\x30\x38\x30\x34\x34\x34\x34\x32\x35\x30\x31\x30","\x31\x3A\x31\x30\x38\x30\x34\x34\x34\x34\x32\x35\x30\x31\x30\x3A\x77\x65\x62\x3A\x38\x61\x37\x66\x65\x35\x36\x37\x65\x38\x64\x38\x32\x33\x36\x33\x63\x62\x37\x64\x32\x62"];const Config={apiKey:_0x1862[0],authDomain:_0x1862[1],databaseURL:_0x1862[2],projectId:_0x1862[3],storageBucket:_0x1862[4],messagingSenderId:_0x1862[5],appId:_0x1862[6]}
+    
+    const app = initializeApp(Config);
+    const db = getDatabase(app);
+
+    const dbRef = ref(db, 'user')
+
+    let indexcard = 0;
+
+    function is(value){
+        document.getElementById('pagedata').innerHTML = ''
+        let indexcard = 0;
+        
+        onChildAdded(dbRef, (snapshot) => {
+            const newData = snapshot.val()
+            let backcolor;
+            
+            if(newData.Level == 'A1' || newData.Level == 'A2')
+            backcolor = '#820b5f'
+            else if(newData.Level == 'B1' || newData.Level == 'B2')
+            backcolor = '#eb6400'
+            else
+            backcolor = '#003b69'
+            if(newData.Firstname.toLowerCase().includes(value.toLowerCase())){
+
+                indexcard++
+                document.getElementById('pagedata').innerHTML += `  
+                    <div id="${snapshot.key}" class='card'>
+                        <div id="top_card">
+                            <h3 id="date">22/2/2202</h3>
+                            <h3 id="levet" style="background-color:${backcolor};">${newData.Level}</h3>
+                            <button>${indexcard}</button>
+                        </div>
+                        <div id="card_data">
+                            <h4>FirstName: ${newData.Firstname}</h4>
+                            <h4>LastName: ${newData.Lastname}</h4>
+                            <h4>date of birth: ${newData.Datemelad}</h4>
+                            <h4>Country: ${newData.Contry}</h4>
+                            <h4>Phone: ${newData.Phone}</h4>
+                            <h4>Email: ${newData.Email}</h4>
+                            <h4>Address: ${newData.Street}</h4>
+                            <h4>Level: ${newData.Level}</h4>
+                            <h4>Time Rating: ${newData.Idampa}</h4>
+                            <h4>Examine Before: ${newData.Yesno}</h4>
+                        </div>
+                        <div id="btn_card">
+                            <button class="WhatsApp_card" data-key="${newData.Phone}">WhatsApp</button>
+                            <button id="done_card">Done</button>
+                            <button class="delete_card" data-key='${snapshot.key}' data-name="${newData['Firstname']}">Delete</button>
+                            <button id="copy_card">Copy All</button>
+                        </div>
+                    </div>`
+                    
+                        var delete_btn = document.querySelectorAll('.delete_card')
+                        var whatsApp_btn = document.querySelectorAll('.WhatsApp_card')
+                    
+                        delete_btn.forEach(btn => {
+         
+                            btn.addEventListener('click',function(data){
+                                var key = data.target.getAttribute('data-key')
+                                var name = data.target.getAttribute('data-name')
+        
+                                Swal.fire({
+                                        title: 'Are you sure?',
+                                        html:`user <b style="text-decoration: underline;">${name}</b> will be deleted!`,
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Yes, delete it!'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            remove(ref(db,`user/${key}`)).then(()=>{
+                                                Swal.fire(
+                                                    'Deleted!',
+                                                    'Your file has been deleted.',
+                                                    'success'
+                                                )
+                                            })
+                                        }
+                                    })
+                                })
+                        })  
+        
+                        whatsApp_btn.forEach(btn =>{
+                            btn.addEventListener('click', (data) =>{
+                               let phone = data.target.getAttribute('data-key')
+                               
+                                const phoneWithPlus = phone.replace(/^00/, '+');
+                                const message = '';
+                                const url = `whatsapp://send?phone=${phoneWithPlus}&text=${encodeURIComponent(message)}`;
+                                window.open(url);
+                            })
+                        })
+            }
+        })
+    }
+    is('')
+
+
+    onChildRemoved(ref(db,`user`),function(user){
+        const r1 = ref(db,'Done')
+        push(r1,user.val()).then((res)=>{
+        })
+        document.getElementById(user.key).remove()
+        is()
+    })
+
+    let inp_search = document.getElementById('inp_search')
+    inp_search.onkeyup = (value) =>{
+
+
+        console.log(inp_search.value)
+        is(inp_search.value)
+        // indexcard = 0;
+        // let tbl = ''
+        // onChildAdded(dbRef, (snapshot) => {
+        // const newData = snapshot.val()
+
+
+        // if(newData.Firstname.toLowerCase().includes(inp_search.value)){
+        //     indexcard++
+        //     let backcolor;
+    
+        //     if(newData.Level == 'A1' || newData.Level == 'A2')
+        //     backcolor = '#820b5f'
+        //     else if(newData.Level == 'B1' || newData.Level == 'B2')
+        //     backcolor = '#eb6400'
+        //     else
+        //     backcolor = '#003b69'
+    
+        //     tbl += `  
+        //         <div id="${snapshot.key}" class='card'>
+        //             <div id="top_card">
+        //                 <h3 id="date">22/2/2202</h3>
+        //                 <h3 id="levet" style="background-color:${backcolor};">${newData.Level}</h3>
+        //                 <button>${indexcard}</button>
+        //             </div>
+        //             <div id="card_data">
+        //                 <h4>FirstName: ${newData.Firstname}</h4>
+        //                 <h4>LastName: ${newData.Lastname}</h4>
+        //                 <h4>date of birth: ${newData.Datemelad}</h4>
+        //                 <h4>Country: ${newData.Contry}</h4>
+        //                 <h4>Phone: ${newData.Phone}</h4>
+        //                 <h4>Email: ${newData.Email}</h4>
+        //                 <h4>Address: ${newData.Street}</h4>
+        //                 <h4>Level: ${newData.Level}</h4>
+        //                 <h4>Time Rating: ${newData.Idampa}</h4>
+        //                 <h4>Examine Before: ${newData.Yesno}</h4>
+        //             </div>
+        //             <div id="btn_card">
+        //                 <button class="WhatsApp_card" data-key="${newData.Phone}">WhatsApp</button>
+        //                 <button id="done_card">Done</button>
+        //                 <button class="delete_card" data-key='${snapshot.key}' data-name="${newData['Firstname']}">Delete</button>
+        //                 <button id="copy_card">Copy All</button>
+        //             </div>
+        //         </div>`
+        //         document.getElementById('pagedata').innerHTML = tbl
+        // }
+        // else{
+        //     if(indexcard == 0){
+        //         document.getElementById('pagedata').innerHTML = ''
+        //     }
+        // }
+        // })
+    }
+
+</script>
+
+</html>
