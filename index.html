@@ -10,21 +10,37 @@
 </head>
 
 <body>
+    <div class="sidebar">
+    <div class="triangle1"></div>
+    <ul class="menu">
+        <h1>Settings</h1>
+        <button id="Home">Home</button>
+        <button id="page_submit_edit">Registration Page</button>
+        <button>WhatsApp Api</button>
+        <button>Home</button>
+    </ul>
+    </div>       
     <div class="contener">
         <div id="toppage">
-            <div id="Search">
-                <input type="search" id="inp_search" placeholder="Search">
-                <div id="btn_search">
-                    <button id="kok" data-key="">A1</button>
-                    <button>A2</button>
-                    <button>B1</button>
-                    <button>B2</button>
-                    <button>C1</button>
-                    <button>C2</button>
+            <div id="mnu_ser">
+                <button class="sidebar-toggle">&#x2630;</button>
+                <div id="Search">
+                    <input type="search" id="inp_search" placeholder="Search">
+                    <div id="btn_search">
+                        <button class="btn_level" id="A1">A1</button>
+                        <button class="btn_level" id="A2">A2</button>
+                        <button class="btn_level" id="B1">B1</button>
+                        <button class="btn_level" id="B2">B2</button>
+                        <button class="btn_level" id="C1">C1</button>
+                        <button class="btn_level" id="C2">C2</button>
+                    </div>
                 </div>
+                <button class="toggle-button">
+                    <div class="toggle-ball"></div>
+                  </button>                                   
             </div>
         </div>
-        <div id="pagedata">
+        <div class="pagedata">
         </div>
     </div>
 </body>
@@ -39,15 +55,18 @@
 
     const dbRef = ref(db, 'user')
 
-    let indexcard = 0;
+    let indexcard1 = 0;
+    let allvaluesearch = '';
 
     function is(value){
-        document.getElementById('pagedata').innerHTML = ''
         let indexcard = 0;
         
         onChildAdded(dbRef, (snapshot) => {
+            if(indexcard == 0){
+                document.querySelector('.pagedata').innerHTML = ''
+            }
             const newData = snapshot.val()
-            let backcolor;
+            let backcolor; 
             
             if(newData.Level == 'A1' || newData.Level == 'A2')
             backcolor = '#820b5f'
@@ -55,10 +74,11 @@
             backcolor = '#eb6400'
             else
             backcolor = '#003b69'
-            if(newData.Firstname.toLowerCase().includes(value.toLowerCase())){
+            
+            if(newData.Firstname.toLowerCase().includes(value.toLowerCase()) || newData.Level.toLowerCase().includes(value.toLowerCase())){
 
                 indexcard++
-                document.getElementById('pagedata').innerHTML += `  
+                document.querySelector('.pagedata').innerHTML += `  
                     <div id="${snapshot.key}" class='card'>
                         <div id="top_card">
                             <h3 id="date">22/2/2202</h3>
@@ -84,6 +104,7 @@
                             <button id="copy_card">Copy All</button>
                         </div>
                     </div>`
+
                     
                         var delete_btn = document.querySelectorAll('.delete_card')
                         var whatsApp_btn = document.querySelectorAll('.WhatsApp_card')
@@ -115,6 +136,7 @@
                                     })
                                 })
                         })  
+                        indexcard1 = indexcard
         
                         whatsApp_btn.forEach(btn =>{
                             btn.addEventListener('click', (data) =>{
@@ -129,75 +151,79 @@
             }
         })
     }
-    is('')
+    is(allvaluesearch)
+
+
+
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    let contener = document.querySelector('.contener')
+    let isstyle = false;
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if(!isstyle){
+            contener.style.width = '80%'
+            contener.style.margin = 'auto 0px auto auto'
+            contener.style.transition = '0.25s';
+            contener.style.width = '80.5%'
+            isstyle = true
+        }
+        else{
+            contener.style.transition = '0.35s';
+            contener.style.width = '100%'
+            contener.style.width = '100%'
+            isstyle = false
+        }
+    });
+
+// اختيار الزر
+const toggleButton = document.querySelector('.toggle-button');
+
+// إضافة حدث النقر
+toggleButton.addEventListener('click', function() {
+  // إضافة/إزالة الفئة "active" على الزر
+  this.classList.toggle('active');
+});
 
 
     onChildRemoved(ref(db,`user`),function(user){
-        const r1 = ref(db,'Done')
-        push(r1,user.val()).then((res)=>{
-        })
+        // const r1 = ref(db,'Done')
+        // push(r1,user.val()).then((res)=>{
+        // })
         document.getElementById(user.key).remove()
-        is()
+        is(allvaluesearch)
     })
 
     let inp_search = document.getElementById('inp_search')
-    inp_search.onkeyup = (value) =>{
-
-
-        console.log(inp_search.value)
+    inp_search.onkeyup = () =>{
+        allvaluesearch = inp_search.value
         is(inp_search.value)
-        // indexcard = 0;
-        // let tbl = ''
-        // onChildAdded(dbRef, (snapshot) => {
-        // const newData = snapshot.val()
-
-
-        // if(newData.Firstname.toLowerCase().includes(inp_search.value)){
-        //     indexcard++
-        //     let backcolor;
-    
-        //     if(newData.Level == 'A1' || newData.Level == 'A2')
-        //     backcolor = '#820b5f'
-        //     else if(newData.Level == 'B1' || newData.Level == 'B2')
-        //     backcolor = '#eb6400'
-        //     else
-        //     backcolor = '#003b69'
-    
-        //     tbl += `  
-        //         <div id="${snapshot.key}" class='card'>
-        //             <div id="top_card">
-        //                 <h3 id="date">22/2/2202</h3>
-        //                 <h3 id="levet" style="background-color:${backcolor};">${newData.Level}</h3>
-        //                 <button>${indexcard}</button>
-        //             </div>
-        //             <div id="card_data">
-        //                 <h4>FirstName: ${newData.Firstname}</h4>
-        //                 <h4>LastName: ${newData.Lastname}</h4>
-        //                 <h4>date of birth: ${newData.Datemelad}</h4>
-        //                 <h4>Country: ${newData.Contry}</h4>
-        //                 <h4>Phone: ${newData.Phone}</h4>
-        //                 <h4>Email: ${newData.Email}</h4>
-        //                 <h4>Address: ${newData.Street}</h4>
-        //                 <h4>Level: ${newData.Level}</h4>
-        //                 <h4>Time Rating: ${newData.Idampa}</h4>
-        //                 <h4>Examine Before: ${newData.Yesno}</h4>
-        //             </div>
-        //             <div id="btn_card">
-        //                 <button class="WhatsApp_card" data-key="${newData.Phone}">WhatsApp</button>
-        //                 <button id="done_card">Done</button>
-        //                 <button class="delete_card" data-key='${snapshot.key}' data-name="${newData['Firstname']}">Delete</button>
-        //                 <button id="copy_card">Copy All</button>
-        //             </div>
-        //         </div>`
-        //         document.getElementById('pagedata').innerHTML = tbl
-        // }
-        // else{
-        //     if(indexcard == 0){
-        //         document.getElementById('pagedata').innerHTML = ''
-        //     }
-        // }
-        // })
     }
+    inp_search.onblur = () =>{
+        is('')
+    }
+    function reply(){
+        is(allvaluesearch)
+    }
+
+    let btnlevel = document.querySelectorAll('.btn_level')
+    btnlevel.forEach(btn1 =>{
+        btn1.addEventListener('click', (data1) =>{
+            allvaluesearch = btn1.id
+            is(btn1.id)
+        })
+    })
+
+    ////////////////////////////////////////// Page Submit Edit/////////
+
+    let btnsubmitedit = document.getElementById('page_submit_edit')
+    let btnhome = document.getElementById('Home')
+    btnsubmitedit.addEventListener('click', () =>{
+        document.querySelector('.pagedata').style.display = 'none'
+    })
+    btnhome.addEventListener('click', () =>{
+        document.querySelector('.pagedata').style.display = 'flex'
+    })
 
 </script>
 

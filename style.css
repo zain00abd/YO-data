@@ -7,8 +7,12 @@ button{
     outline: none;
 }
 body{
-    background-color: rgba(0, 255, 255, 0.177);
+    background:linear-gradient(to right,#4accff,#05b5a4);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.hide{
+    display: none;
+    background-color: #002163;
 }
 .contener{
     width: 100%;
@@ -23,7 +27,7 @@ body{
 }
 #Search{
     display: flex;
-    padding: 17px;
+    padding-left: 17px;
     width: 40%;
     flex-flow: row;
     justify-content: space-between;
@@ -70,7 +74,7 @@ body{
     outline: none;
     box-shadow: 2px 2px 10px #193358;
 }
-#pagedata{
+.pagedata{
     width: 95%;
     margin: auto;
     padding-top: 8%;
@@ -160,7 +164,7 @@ body{
     background-color: #01a169;
 }
 .delete_card{
-    background-color: rgb(255, 252, 252);
+    background-color: rgb(253, 226, 226);
     color: rgb(255, 0, 0);
     width: 25%;
     font-weight: 600;
@@ -179,12 +183,113 @@ body{
     transition: 0.4s;
     background-color: #ff8000;
 }
+.sidebar {
+    width: 19.5%;
+    background:linear-gradient(#3c0d77,rgb(10, 100, 156));
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    transition: transform 0.3s ease-in-out;
+    z-index: 2;
+    text-align: center;
+    color: white;
+}
+.triangle1 {
+    position: absolute;
+    border-top: 920px solid transparent; /* إنشاء قمة المثلث */
+    border-left: 250px solid rgba(25, 0, 94, 0.311); /* إنشاء الخط السفلي للمثلث */
+    z-index: -1;
+    height: 100%;
+}
+  
+#mnu_ser{
+    display: flex;
+}
+.sidebar-toggle {
+    background-color: #002163;
+    color: white;
+    width: 4%;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+}
 
+.sidebar ul {
+    margin-top: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.sidebar ul h1{
+    margin: 15px;
+}
 
+.sidebar ul button {
+    color: white;
+    width: 100%;
+    padding: 15px;
+    background:none;
+    font-weight: 600;
+    letter-spacing: 0.3;
+}
+
+.sidebar ul button:hover {
+    transition: 0.2s;
+    background-color: #c4c3c34b;
+    cursor: pointer;
+    color: wheat;
+}
+
+.sidebar.active {
+    transform: translateX(250px);
+}
+
+/* ستايل الزر المفعل */
+.toggle-button {
+    background-color: #979a97; /* لون الزر المفعل */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    position: relative;
+    width: 4%;
+    height: 20px;
+    border-radius: 20px;
+  }
+  
+  /* ستايل الكرة */
+  .toggle-ball {
+    width: 24px;
+    height: 24px;
+    background-color: rgb(121, 120, 120); /* لون الكرة */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 2px;
+    transition: all 0.2s ease-in-out;
+    left: calc(100% - 20px);
+  }
+  
+  /* تغيير ستايل الزر عند تفعيله */
+  .toggle-button.active .toggle-ball {
+    left: calc(100% - 50px);
+    background-color: #36f449; /* لون الكرة عند التفعيل */
+
+  }
+    .toggle-button.active{
+        background-color: #457f56;
+    }
 
 @media screen and (max-width:1000px){
     *{
-        zoom: 95%;
+        zoom: 90%;
         font-size: 14px;
       }
 }
