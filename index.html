@@ -15,9 +15,31 @@
     <ul class="menu">
         <h1>Settings</h1>
         <button id="Home">Home</button>
-        <button id="page_submit_edit">Registration Page</button>
-        <button>WhatsApp Api</button>
-        <button>Home</button>
+
+        <button id="bb1">Registration Page</button>
+        <ul id="menu1">
+        <li>        
+            <h5>Recording activity</h5>
+            <button class="toggle-button">
+                <div class="toggle-ball"></div>
+            </button>
+        </li>
+        <hr style="background-color: darkgray;">
+        <h5>Registration restriction:</h5>
+        <h6>The maximum number to register</h6>
+        <li>
+            <input type="number" id="inp_max" placeholder="Max register">
+            <button id="btn_max_ply">Apply</button>
+        </li>
+
+        </ul>
+        <button id="bb2">WhatsApp Api</button>
+        <ul id="menu2">
+            <li style="display: flex; flex-flow: column;">   
+                <h5>WhatsApp Start Message:</h5>     
+                <p id="p_wats" contenteditable="true" spellcheck="false">1</p>
+            </li>
+        </ul>
     </ul>
     </div>       
     <div class="contener">
@@ -34,13 +56,11 @@
                         <button class="btn_level" id="C1">C1</button>
                         <button class="btn_level" id="C2">C2</button>
                     </div>
-                </div>
-                <button class="toggle-button">
-                    <div class="toggle-ball"></div>
-                  </button>                                   
+                </div>                                  
             </div>
         </div>
         <div class="pagedata">
+        </div>
         </div>
     </div>
 </body>
@@ -57,13 +77,14 @@
 
     let indexcard1 = 0;
     let allvaluesearch = '';
+    let pageshowdata = document.querySelector('.pagedata')
 
     function is(value){
         let indexcard = 0;
         
         onChildAdded(dbRef, (snapshot) => {
             if(indexcard == 0){
-                document.querySelector('.pagedata').innerHTML = ''
+                pageshowdata.innerHTML = ''
             }
             const newData = snapshot.val()
             let backcolor; 
@@ -78,7 +99,7 @@
             if(newData.Firstname.toLowerCase().includes(value.toLowerCase()) || newData.Level.toLowerCase().includes(value.toLowerCase())){
 
                 indexcard++
-                document.querySelector('.pagedata').innerHTML += `  
+                pageshowdata.innerHTML += `  
                     <div id="${snapshot.key}" class='card'>
                         <div id="top_card">
                             <h3 id="date">22/2/2202</h3>
@@ -215,14 +236,25 @@ toggleButton.addEventListener('click', function() {
     })
 
     ////////////////////////////////////////// Page Submit Edit/////////
-
-    let btnsubmitedit = document.getElementById('page_submit_edit')
     let btnhome = document.getElementById('Home')
-    btnsubmitedit.addEventListener('click', () =>{
-        document.querySelector('.pagedata').style.display = 'none'
-    })
+    let pagewhatsappapi = document.querySelector('.page_edit_submit')
     btnhome.addEventListener('click', () =>{
-        document.querySelector('.pagedata').style.display = 'flex'
+        pageshowdata.style.display = 'flex'
+    })
+
+    var menu = document.getElementById("menu1");
+    document.getElementById('bb1').addEventListener('click', () =>{
+
+        menu.classList.toggle("active");
+    }) 
+
+    var menu1 = document.getElementById("menu2");
+    document.getElementById('bb2').addEventListener('click', () =>{
+        menu1.classList.toggle("active")
+    })
+
+    let btnapply = document.getElementById('btn_max_ply')
+    btnapply.addEventListener('click',() =>{
     })
 
 </script>
