@@ -66,7 +66,7 @@
 </body>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js";
-    import { getDatabase, update, set, ref, get, onChildAdded, onChildRemoved, push, child, remove } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-database.js";
+    import { getDatabase, update, set, ref, get, onChildChanged, onChildAdded, onChildRemoved, push, child, remove } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-database.js";
 
     var _0x1862 = ["\x41\x49\x7A\x61\x53\x79\x42\x68\x50\x42\x6C\x65\x72\x4D\x5A\x47\x50\x50\x6E\x39\x6D\x66\x59\x73\x5A\x59\x75\x49\x42\x48\x30\x73\x6A\x41\x63\x44\x6F\x42\x59","\x6F\x79\x2D\x67\x6F\x65\x74\x68\x65\x2E\x66\x69\x72\x65\x62\x61\x73\x65\x61\x70\x70\x2E\x63\x6F\x6D","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6F\x79\x2D\x67\x6F\x65\x74\x68\x65\x2D\x64\x65\x66\x61\x75\x6C\x74\x2D\x72\x74\x64\x62\x2E\x66\x69\x72\x65\x62\x61\x73\x65\x69\x6F\x2E\x63\x6F\x6D","\x6F\x79\x2D\x67\x6F\x65\x74\x68\x65","\x6F\x79\x2D\x67\x6F\x65\x74\x68\x65\x2E\x61\x70\x70\x73\x70\x6F\x74\x2E\x63\x6F\x6D","\x31\x30\x38\x30\x34\x34\x34\x34\x32\x35\x30\x31\x30","\x31\x3A\x31\x30\x38\x30\x34\x34\x34\x34\x32\x35\x30\x31\x30\x3A\x77\x65\x62\x3A\x38\x61\x37\x66\x65\x35\x36\x37\x65\x38\x64\x38\x32\x33\x36\x33\x63\x62\x37\x64\x32\x62"];const Config={apiKey:_0x1862[0],authDomain:_0x1862[1],databaseURL:_0x1862[2],projectId:_0x1862[3],storageBucket:_0x1862[4],messagingSenderId:_0x1862[5],appId:_0x1862[6]}
     
@@ -198,14 +198,30 @@
     });
 
 // اختيار الزر
-const toggleButton = document.querySelector('.toggle-button');
+    const toggleButton = document.querySelector('.toggle-button');
 
-// إضافة حدث النقر
-toggleButton.addEventListener('click', function() {
-  // إضافة/إزالة الفئة "active" على الزر
-  this.classList.toggle('active');
-});
+    let boolis = true;
+    toggleButton.addEventListener('click', function() {
+        boolis = false
+        update(ref(db,'bool/'),{
+            'isopen':this.classList.toggle('active')
+        })
+            boolis = true
+    });
 
+
+    onChildChanged(ref(db,'bool'),(resed)=>{
+        if(boolis){
+
+            console.log('kdsl')
+            toggleButton.classList.toggle('active')
+        }
+    })
+
+    onChildAdded(ref(db,'bool'),(resed)=>{
+        if(resed.val())
+        toggleButton.classList.toggle('active')
+    })
 
     onChildRemoved(ref(db,`user`),function(user){
         // const r1 = ref(db,'Done')
@@ -244,18 +260,200 @@ toggleButton.addEventListener('click', function() {
 
     var menu = document.getElementById("menu1");
     document.getElementById('bb1').addEventListener('click', () =>{
-
         menu.classList.toggle("active");
     }) 
 
     var menu1 = document.getElementById("menu2");
     document.getElementById('bb2').addEventListener('click', () =>{
         menu1.classList.toggle("active")
+        
     })
 
     let btnapply = document.getElementById('btn_max_ply')
     btnapply.addEventListener('click',() =>{
     })
+
+
+
+
+    // let kina;
+    // let first;
+    // let elements = document.getElementsByTagName('*');
+    // function generateRandomEmail() {
+    //     const kk = ['qashqo','pinch','small','corsa','najar','chlapy',"King", "Queen",
+    //                 "Prince", "Princess", "Duke", "Duchess", "Earl", "Countess", "Baron",
+    //                 "Baroness", "Lord", "Lady", "Sir", "Madam", "Master", "Mistress", "Captain",
+    //                 "Commander", "Admiral", "General", "Colonel", "Lieutenant", "Sergeant", "Private",
+    //                 "Detective", "Sheriff", "Marshal", "Agent", "Doctor", "Professor", "Scientist", "Engineer",
+    //                 "Inventor", "Artist", "Writer", "Poet", "Musician", "Actor", "Director", "Producer", "Entrepreneur",
+    //                 "Philanthropist", "Activist", "Visionary", "Maverick", "Rebel", "Champion", "Hero", "Legend"];
+    //     const domains = ["gmail.com"]; // نطاقات البريد الإلكتروني المسموح بها
+    //     const names = ['ahmad','Ahmad','mohamed','moham','saly','sara','sandy','samir','tamey','tamor','torty',
+    //              'daran','rana1','rana15','zaid5','homam','samar','sawsan1','malak','nour','samera','saron',
+    //              'magd300','laith5','gamal10','hola5','shemaa','jamal','fefe22','abdol',"Adam", "Alice", "Ben",
+    //              "Catherine", "Charlie", "David", "Emma", "Frank", "Grace", "Henry", "Isabelle", "Jack", "James",
+    //              "Jasmine", "John", "Julia", "Katie", "Kevin", "Laura", "Leo", "Lily", "Lucas", "Maggie", "Matthew",
+    //              "Michael", "Molly", "Nathan", "Olivia", "Oscar", "Patrick", "Rachel", "Rebecca", "Richard", "Robert",
+    //              "Rose", "Ruby", "Ryan", "Samuel", "Sarah", "Sophie", "Steven", "Thomas", "Tina", "William",'salem5','Asha2001'];
+    //     const maxNumber = 9999;
+    //     const number = Math.floor(Math.random() * maxNumber);
+    //     const name = Math.random().toString(36).substring(2, 4);
+    //     const domain = domains[Math.floor(Math.random() * domains.length)];
+    //     const names1 = names[Math.floor(Math.random() * names.length)];
+    //     const kk1 = kk[Math.floor(Math.random() * kk.length)];
+    //     kina = kk1
+    //     first = names1
+    //     return names1 + '.' + name + number + "@" + domain;
+    // }
+    // const randomEmail = generateRandomEmail();
+    // const pass = 'Nour123456'
+
+    // for(let i = 0; i < elements.length; i++){
+
+    //     if(elements[i].id == 'firstName' 
+    //     && elements[i].localName == 'input')
+    //     {
+    //         elements[i].value = first;
+    //     }
+
+    //     if(elements[i].id == 'lastName' 
+    //     && elements[i].localName == 'input')
+    //     {
+    //         elements[i].value = kina;
+    //     }
+
+    //     if(elements[i].type == 'email' 
+    //     && elements[i].localName == 'input')
+    //     {
+    //         elements[i].value = randomEmail;
+    //     }
+
+    //     if(elements[i].type == 'password' 
+    //     && elements[i].localName == 'input')
+    //     {
+    //         elements[i].value = pass;
+    //     }
+
+    //     if(elements[i].innerHTML == 'التالي' 
+    //     && (elements[i].localName == 'span' || elements[i].localName == 'button'))
+    //     {
+    //         setTimeout(function(){
+    //             elements[i].click();
+    //         },500)
+    //     }
+    //     }
+
+// console.log(randomEmail);
+
+
+
+
+
+
+
+
+
+
+// setInterval(()=>{
+
+//     let isAutoRopot = false;
+//     let numreturn = 0;
+    
+//         numreturn++;
+//         let Email1 = '';
+//         let Password1 = '';
+    
+//         let numbottonNext = 0;
+//         let numelement = 0;
+        
+//         let elements = document.getElementsByTagName('*');
+//         let isEmail = false;
+//         let isPassword = false;
+        
+//         for(let i = 0; i < elements.length; i++){
+//             console.log(elements[39].innerHTML)
+    
+//             if(elements[i].type == 'email' 
+//             || elements[i].id == 'username' 
+//             || elements[i].name == 'username')
+//             {
+//                 if(elements[i].localName == 'input'){
+//                     elements[i].value = Email1;
+//                     isEmail = true;
+//                     isAutoRopot = true;
+//                 }
+//             }
+    
+//             if(elements[i].type == 'password' 
+//             || elements[i].id == 'password' 
+//             || elements[i].name == 'password')
+//             {
+//                 if(elements[i].localName == 'input'){
+//                     elements[i].value = Password1;
+//                     isPassword = true;
+//                     isAutoRopot = true;
+//                 }
+//             }
+    
+//             if(elements[i].innerHTML == 'تسجيل الدخول '
+//             || elements[i].innerHTML == ' تسجيل الدخول'
+//             || elements[i].innerHTML == ' تسجيل الدخول '
+//             || elements[i].innerHTML == 'تسجيل الدخول')
+//             {
+//                 if(isEmail && isPassword && elements[i].localName == 'button'){
+//                     setTimeout(()=>{
+//                         elements[i].click();
+//                     },1000)
+//                 }
+                
+//                 isAutoRopot = true;
+//             }
+    
+    
+//             if(elements[i].innerHTML == ' استمرار '
+//             || elements[i].innerHTML == 'استمرار '
+//             || elements[i].innerHTML == ' استمرار'
+//             || elements[i].innerHTML == 'استمرار'
+//             || elements[i].innerHTML == 'تأكيد الحجز والدفع'
+//             || elements[i].innerHTML == ' تأكيد الحجز والدفع'
+//             || elements[i].innerHTML == 'تأكيد الحجز والدفع '
+//             || elements[i].innerHTML == ' تأكيد الحجز والدفع '
+//             || elements[i].id == 'bottomNextLink')
+//             {
+//                 if(elements[i].localName == 'button'){
+//                     numelement = i;
+//                     numbottonNext++
+//                     if(numbottonNext >= 2){
+//                         setTimeout(()=>{
+//                             elements[i].click();
+//                             console.log('1')
+//                         },100)
+//                     }
+//                     else if(numbottonNext == 1 && numelement !== 0){
+//                         console.log('2')
+//                         setTimeout(()=>{
+//                         elements[numelement].click();
+//                         },100)
+//                     }
+//                 }
+//             }
+    
+//             if(elements[i].innerHTML == ' الحجز لي '
+//             || elements[i].innerHTML == 'الحجز لي '
+//             || elements[i].innerHTML == ' الحجز لي'
+//             || elements[i].innerHTML == 'الحجز لي'
+//             || elements[i].id == 'id1b')
+//             {
+//                 if(elements[i].localName == 'button'){
+//                     elements[i].click();
+//                 }
+//             }
+//         }
+//         console.log(elements[39])
+// },2000)
+
+
+
 
 </script>
 
