@@ -188,7 +188,7 @@ body{
     height: 100%;
     position: fixed;
     top: 0;
-    left: -19.8%;
+    left: -250px;
     transition: transform 0.3s ease-in-out;
     z-index: 2;
     text-align: center;
@@ -198,7 +198,7 @@ body{
     position: absolute;
     border-top: 920px solid transparent; /* إنشاء قمة المثلث */
     border-left: 150px solid rgba(25, 0, 94, 0.311); /* إنشاء الخط السفلي للمثلث */
-    z-index: -1;
+    z-index: -5;
     height: 100%;
 }
 #mnu_ser{
@@ -366,5 +366,24 @@ body{
     *{
         zoom: 90%;
         font-size: 14px;
-      }
+    }
+    #toppage{
+        position: fixed;
+        background:linear-gradient(to right,#2d8bd7,#004763d5);
+        width: 100%;
+        margin: auto;
+        box-shadow: 2px 2px 10px #6083a8;
+        z-index: 1;
+    }
+    .sidebar-toggle{
+        width: 50px;
+        z-index: 1000;
+    }
+    .triangle1 {
+        position: absolute;
+        border-top: 920px solid transparent; /* إنشاء قمة المثلث */
+        border-left: 100px solid rgba(25, 0, 94, 0.311); /* إنشاء الخط السفلي للمثلث */
+        z-index: -5;
+        height: 100%;
+    }
 }
