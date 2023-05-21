@@ -49,6 +49,7 @@
                 <div id="Search">
                     <input type="search" id="inp_search" placeholder="Search">
                     <div id="btn_search">
+                        <button class="btn_level" id="" style="width: 70px; margin: auto 5px;">All Cards</button>
                         <button class="btn_level" id="A1">A1</button>
                         <button class="btn_level" id="A2">A2</button>
                         <button class="btn_level" id="B1">B1</button>
@@ -57,6 +58,14 @@
                         <button class="btn_level" id="C2">C2</button>
                     </div>
                 </div>                                  
+            </div>
+            <div id="info_num">
+                <div style="display: flex; flex-flow: row;">
+                    <h4>Total Cards:<h4 id="num_index" style="background-color: #cf0029;margin-left: -8px;"></h4></h4>
+                </div>
+                <div id="info_res" style="display: flex; flex-flow: row;">
+                    <h4>registration status:<h4 id="num_resmax" style="background-color: #00c480;margin-left: -8px;"></h4></h4>
+                </div>
             </div>
         </div>
         <div class="pagedata">
@@ -170,6 +179,7 @@
                             })
                         })
             }
+            document.getElementById('num_index').innerHTML = indexcard
         })
     }
     is(allvaluesearch)
@@ -197,10 +207,28 @@
         }
     });
 
-// اختيار الزر
-    const toggleButton = document.querySelector('.toggle-button');
+    function resstyle(colorid){
 
+        var element = document.querySelector('#info_res');
+        var styleSheets = document.styleSheets;
+        var styleSheet = styleSheets[0]; 
+        styleSheet.insertRule(`
+            #info_res::before {
+                position: absolute;
+                content: '';
+                background-color: ${colorid};
+                width: 194px;
+                left: 8px;
+                bottom: 2px;
+                height: 7px;
+            }
+        `, styleSheet.cssRules.length);
+
+    }
+
+    const toggleButton = document.querySelector('.toggle-button');
     let boolis = true;
+
     toggleButton.addEventListener('click', function() {
         boolis = false
         update(ref(db,'bool/'),{
@@ -209,24 +237,25 @@
             boolis = true
     });
 
-
     onChildChanged(ref(db,'bool'),(resed)=>{
         if(boolis){
-
-            console.log('kdsl')
             toggleButton.classList.toggle('active')
         }
+        if(resed.val())
+        resstyle('#00ffa6')
+        else
+        resstyle('#ff0033')
     })
 
     onChildAdded(ref(db,'bool'),(resed)=>{
-        if(resed.val())
-        toggleButton.classList.toggle('active')
+        if(resed.val()){
+            toggleButton.classList.toggle('active')
+            resstyle('#00ffa6')
+        }
+        else{resstyle('#ff0033')}
     })
 
     onChildRemoved(ref(db,`user`),function(user){
-        // const r1 = ref(db,'Done')
-        // push(r1,user.val()).then((res)=>{
-        // })
         document.getElementById(user.key).remove()
         is(allvaluesearch)
     })
@@ -243,13 +272,26 @@
         is(allvaluesearch)
     }
 
+    let oldbtn = '';
     let btnlevel = document.querySelectorAll('.btn_level')
     btnlevel.forEach(btn1 =>{
         btn1.addEventListener('click', (data1) =>{
             allvaluesearch = btn1.id
             is(btn1.id)
+            if(oldbtn !== ''){
+                document.getElementById(oldbtn).style.backgroundColor = '';
+                document.getElementById(oldbtn).style.color = ''
+            }
+            if(btn1.id !== ''){
+                oldbtn = btn1.id;
+                document.getElementById(btn1.id).style.backgroundColor = '#ffd700'
+                document.getElementById(btn1.id).style.color = 'black'
+            }
         })
     })
+
+    console.log('zain')
+
 
     ////////////////////////////////////////// Page Submit Edit/////////
     let btnhome = document.getElementById('Home')
@@ -271,9 +313,19 @@
 
     let btnapply = document.getElementById('btn_max_ply')
     btnapply.addEventListener('click',() =>{
+        update(ref(db,'resmax/'),{
+            'num':document.getElementById('inp_max').value,
+        })
+        document.getElementById('inp_max').value = ''
     })
 
+    onChildChanged(ref(db,'resmax'),(nummax) => {
+        document.getElementById('num_resmax').innerHTML = nummax.val()
+    })
 
+    onChildAdded(ref(db,'resmax'),(resed)=>{
+        document.getElementById('num_resmax').innerHTML = resed.val()
+    })
 
 
     // let kina;

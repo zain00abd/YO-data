@@ -23,16 +23,43 @@ body{
     margin: auto;
     box-shadow: 2px 2px 10px #6083a8;
     z-index: 1;
+    display: flex;
+    justify-content: space-between;
+}
+#info_num{
+    margin: auto;
+    margin-left: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    width: 600px;
+}
+#info_res{
+    position: relative;
+}
+/* #info_res::before{
+    position: absolute;
+    content: '';
+    background-color: #00ffa6;
+    width: 194px;
+    left: 8px;
+    bottom: 2px;
+    height: 7px;
+} */
+#info_num h4{
+    background-color: #000a55;
+    color: #ffffff;
+    padding: 3px;
+    letter-spacing: 1px;
 }
 #Search{
     display: flex;
     padding-left: 17px;
-    width: 40%;
+    width: 500px;
     flex-flow: row;
     justify-content: space-between;
 }
 #btn_search{    
-    width: 60%;
+    width: 80%;
     display: flex;
     flex-flow: row;
     justify-content: space-evenly;
@@ -50,7 +77,7 @@ body{
     transition: 0.3s;
     width: 34px;
     height: 32px;
-    background-color: #003b53c2;
+    background-color: #63cdf1eb;
     font-weight: 550;
     border-radius: 5px;
     color: aliceblue;
@@ -71,7 +98,7 @@ body{
     transition: 0.4s;
     border: none;
     outline: none;
-    box-shadow: 2px 2px 10px #193358;
+    box-shadow: 2px 2px 10px #19583e;
 }
 .pagedata{
     width: 95%;
@@ -207,7 +234,7 @@ body{
 .sidebar-toggle {
     background-color: #002163;
     color: white;
-    width: 4%;
+    width: 10%;
     height: 50px;
     font-size: 20px;
     cursor: pointer;
@@ -385,5 +412,14 @@ body{
         border-left: 100px solid rgba(25, 0, 94, 0.311); /* إنشاء الخط السفلي للمثلث */
         z-index: -5;
         height: 100%;
+    }
+    #info_res::before{
+        position: absolute;
+        content: '';
+        background-color: #00dd90;
+        width: 155px;
+        left: 8px;
+        bottom: 2px;
+        height: 7px;
     }
 }
