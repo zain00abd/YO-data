@@ -207,22 +207,18 @@
         }
     });
 
+    var element = document.querySelector('#info_res');
     function resstyle(colorid){
-
-        var element = document.querySelector('#info_res');
-        var styleSheets = document.styleSheets;
-        var styleSheet = styleSheets[0]; 
-        styleSheet.insertRule(`
-            #info_res::before {
-                position: absolute;
-                content: '';
-                background-color: ${colorid};
-                width: 194px;
-                left: 8px;
-                bottom: 2px;
-                height: 7px;
-            }
-        `, styleSheet.cssRules.length);
+        if(colorid){
+            element.classList.add('isopen')
+            element.classList.remove('isnotopen')
+            console.log('1')
+        }
+        else{
+            element.classList.remove('isopen')
+            element.classList.add('isnotopen')
+            console.log('2')
+        }
 
     }
 
@@ -241,18 +237,14 @@
         if(boolis){
             toggleButton.classList.toggle('active')
         }
-        if(resed.val())
-        resstyle('#00ffa6')
-        else
-        resstyle('#ff0033')
+        resstyle(resed.val())
     })
 
     onChildAdded(ref(db,'bool'),(resed)=>{
         if(resed.val()){
             toggleButton.classList.toggle('active')
-            resstyle('#00ffa6')
         }
-        else{resstyle('#ff0033')}
+        resstyle(resed.val())
     })
 
     onChildRemoved(ref(db,`user`),function(user){

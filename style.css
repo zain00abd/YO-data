@@ -100,6 +100,24 @@ body{
     outline: none;
     box-shadow: 2px 2px 10px #19583e;
 }
+.isopen::before{
+    position: absolute;
+    content: '';
+    background-color: rgb(81, 255, 0);
+    width: 195px;
+    left: 8px;
+    bottom: 2px;
+    height: 7px;
+}
+.isnotopen::before{
+    position: absolute;
+    content: '';
+    background-color: red;
+    width: 195px;
+    left: 8px;
+    bottom: 2px;
+    height: 7px;
+}
 .pagedata{
     width: 95%;
     margin: auto;
