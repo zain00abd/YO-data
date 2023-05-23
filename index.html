@@ -222,6 +222,30 @@
 
     }
 
+    var os = null;
+    function getOS() {
+    var userAgent = window.navigator.userAgent
+    if (/Android/.test(userAgent)) {
+        os = 'Android';
+    } else if (/iPhone/.test(userAgent)) {
+        os = 'iOS';
+    }
+    
+    return os;
+}
+getOS()
+
+function zoom(){
+    if(os === 'Android' || os === 'iOS'){
+
+        document.body.style.zoom = '90%'
+    }
+    else{
+        document.body.style.zoom = '100%'
+    }
+}
+zoom()
+
     const toggleButton = document.querySelector('.toggle-button');
     let boolis = true;
 
