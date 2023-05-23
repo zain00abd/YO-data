@@ -440,4 +440,7 @@ body{
         bottom: 2px;
         height: 7px;
     }
+    button{
+        background-color: red;
+    }
 }
