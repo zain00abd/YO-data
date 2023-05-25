@@ -63,8 +63,10 @@
                 <div style="display: flex; flex-flow: row;">
                     <h4>Total Cards:<h4 id="num_index" style="background-color: #cf0029;margin-left: -8px;"></h4></h4>
                 </div>
-                <div id="info_res" style="display: flex; flex-flow: row;">
-                    <h4>registration status:<h4 id="num_resmax" style="background-color: #00c480;margin-left: -8px;"></h4></h4>
+                <div style="display: flex; flex-flow: row;">
+                    <h4>registration status:</h4>
+                    <h4 id="num_resmax" style="background-color: #8b03a7;margin-left: -8px;"></h4>
+                    <h4 id="res_info" style="padding: 3px; margin-left: -8px;"></h4>
                 </div>
             </div>
         </div>
@@ -207,19 +209,18 @@
         }
     });
 
-    var element = document.querySelector('#info_res');
-    function resstyle(colorid){
-        if(colorid){
-            element.classList.toggle('isopen')
-            element.classList.remove('isnotopen')
-            console.log('1')
-        }
-        else{
-            element.classList.remove('isopen')
-            element.classList.toggle('isnotopen')
-            console.log('2')
-        }
-
+    function ResOpen(reas){
+        var element = document.getElementById('res_info');
+            if(reas){
+                element.classList.add('isopen')
+                element.classList.remove('isnotopen')
+                element.innerHTML = 'Open'
+            }
+            else if(!reas){
+                element.classList.remove('isopen')
+                element.classList.add('isnotopen')
+                element.innerHTML = 'Closed'
+            }
     }
 
     var os = null;
@@ -230,7 +231,6 @@
     } else if (/iPhone/.test(userAgent)) {
         os = 'iOS';
     }
-    
     return os;
 }
 getOS()
@@ -261,14 +261,14 @@ zoom()
         if(boolis){
             toggleButton.classList.toggle('active')
         }
-        resstyle(resed.val())
+        ResOpen(resed.val())
     })
 
     onChildAdded(ref(db,'bool'),(resed)=>{
         if(resed.val()){
             toggleButton.classList.toggle('active')
         }
-        resstyle(resed.val())
+        ResOpen(resed.val())
     })
 
     onChildRemoved(ref(db,`user`),function(user){
