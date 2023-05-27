@@ -78,7 +78,7 @@ body{
     transition: 0.3s;
     width: 34px;
     height: 32px;
-    background-color: #63cdf1eb;
+    background-color: #009369eb;
     font-weight: 550;
     border-radius: 5px;
     color: aliceblue;
@@ -394,6 +394,13 @@ body{
     letter-spacing: 0.3;
 }
 
+.colored-toast.swal2-icon-success {
+    background-color: #a5dc86 !important;
+  }
+  
+  .colored-toast.swal2-icon-error {
+    background-color: #f27474 !important;
+  }
 
 
 @media screen and (max-width:900px){

@@ -221,7 +221,47 @@
                 element.classList.add('isnotopen')
                 element.innerHTML = 'Closed'
             }
+        }
+
+
+    let styleicon;
+    let styletext;
+    function showToast(Bstyle) {
+    return new Promise((resolve, reject) => {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-right',
+            width: '290px',
+            height: '25px',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast'
+            },
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+    });
+
+    if(Bstyle){
+        styleicon = 'success'
+        styletext = 'Registration is open'
     }
+    else{
+        styleicon = 'error'
+        styletext = 'Registration is closed'
+    }
+
+    Toast.fire({
+      icon: `${styleicon}`,
+      title: `${styletext}`,
+    }).then(() => {
+      resolve();
+    }).catch(error => {
+      reject(error);
+    });
+  });
+}
+
 
     var os = null;
     function getOS() {
@@ -232,19 +272,19 @@
         os = 'iOS';
     }
     return os;
-}
-getOS()
+    }   
+    getOS()
 
-function zoom(){
-    if(os === 'Android' || os === 'iOS'){
+    function zoom(){
+        if(os === 'Android' || os === 'iOS'){
 
-        document.body.style.zoom = '33%'
+            document.body.style.zoom = '33%'
+        }
+        else{
+            document.body.style.zoom = '100%'
+        }
     }
-    else{
-        document.body.style.zoom = '100%'
-    }
-}
-zoom()
+    zoom()
 
     const toggleButton = document.querySelector('.toggle-button');
     let boolis = true;
@@ -262,6 +302,8 @@ zoom()
             toggleButton.classList.toggle('active')
         }
         ResOpen(resed.val())
+        showToast(resed.val()).then(() => {
+        })
     })
 
     onChildAdded(ref(db,'bool'),(resed)=>{
@@ -269,6 +311,8 @@ zoom()
             toggleButton.classList.toggle('active')
         }
         ResOpen(resed.val())
+        showToast(resed.val()).then(() => {
+        })
     })
 
     onChildRemoved(ref(db,`user`),function(user){
