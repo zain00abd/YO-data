@@ -405,6 +405,7 @@ body{
 
 @media screen and (max-width:900px){
     *{
+        zoom: 101%;
         font-size: 15px;
     }
     #toppage{
