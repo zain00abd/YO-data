@@ -200,8 +200,6 @@
         po = 1
     },1000)
     
-
-
     const sidebar = document.querySelector('.sidebar');
     const sidebarToggle = document.querySelector('.sidebar-toggle');
     let contener = document.querySelector('.contener')
@@ -293,14 +291,20 @@
 
     function zoom(){
         if(os === 'Android' || os === 'iOS'){
-
             document.body.style.zoom = '33%'
+            app.use(function(req, res, next) {
+navigator.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36';
+
+            next();
+    });
         }
         else{
             document.body.style.zoom = '100%'
         }
     }
     zoom()
+
+
 
     const toggleButton = document.querySelector('.toggle-button');
     let boolis = true;
