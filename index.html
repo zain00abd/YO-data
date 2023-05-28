@@ -74,6 +74,7 @@
         </div>
         </div>
     </div>
+    <audio id="myAudio" src="sound/truesub.mp3" preload="auto"></audio>
 </body>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js";
@@ -163,6 +164,7 @@
                                                     'Your file has been deleted.',
                                                     'success'
                                                 )
+                                                is('')
                                             })
                                         }
                                     })
@@ -186,6 +188,18 @@
     }
     is(allvaluesearch)
 
+    let po = 0;
+    onChildAdded(dbRef, (chadata) => {
+        if(po >= 1){
+            showToast('truesubmit')
+            let audio = document.getElementById('myAudio');
+            audio.play();
+        }
+    })
+    setTimeout(() =>{
+        po = 1
+    },1000)
+    
 
 
     const sidebar = document.querySelector('.sidebar');
@@ -232,7 +246,6 @@
             toast: true,
             position: 'top-right',
             width: '290px',
-            height: '25px',
             iconColor: 'white',
             customClass: {
                 popup: 'colored-toast'
@@ -241,14 +254,17 @@
             timer: 3000,
             timerProgressBar: true
     });
-
-    if(Bstyle){
+    if(Bstyle == true){
         styleicon = 'success'
         styletext = 'Registration is open'
     }
-    else{
+    else if(Bstyle == false){
         styleicon = 'error'
         styletext = 'Registration is closed'
+    }
+    else if(Bstyle == 'truesubmit'){
+        styleicon = 'info'
+        styletext = 'Recorder Added'
     }
 
     Toast.fire({
@@ -297,28 +313,11 @@
             boolis = true
     });
 
-    onChildChanged(ref(db,'bool'),(resed)=>{
-        if(boolis){
-            toggleButton.classList.toggle('active')
-        }
-        ResOpen(resed.val())
-        showToast(resed.val()).then(() => {
+    function datanumbermax(number1){
+        update(ref(db,'resmax/'),{
+            'num':number1,
         })
-    })
-
-    onChildAdded(ref(db,'bool'),(resed)=>{
-        if(resed.val()){
-            toggleButton.classList.toggle('active')
-        }
-        ResOpen(resed.val())
-        showToast(resed.val()).then(() => {
-        })
-    })
-
-    onChildRemoved(ref(db,`user`),function(user){
-        document.getElementById(user.key).remove()
-        is(allvaluesearch)
-    })
+    }
 
     let inp_search = document.getElementById('inp_search')
     inp_search.onkeyup = () =>{
@@ -345,12 +344,10 @@
             if(btn1.id !== ''){
                 oldbtn = btn1.id;
                 document.getElementById(btn1.id).style.backgroundColor = '#ffd700'
-                document.getElementById(btn1.id).style.color = 'black'
+                document.getElementById(btn1.id).style.color = 'black'  
             }
         })
     })
-
-    console.log('zain')
 
 
     ////////////////////////////////////////// Page Submit Edit/////////
@@ -372,199 +369,50 @@
     })
 
     let btnapply = document.getElementById('btn_max_ply')
+    let numMax = document.getElementById('inp_max')
     btnapply.addEventListener('click',() =>{
-        update(ref(db,'resmax/'),{
-            'num':document.getElementById('inp_max').value,
+        if(numMax.value !== ''){
+            datanumbermax(Number(numMax.value))
+            numMax.value = ''
+        }
+    })
+
+    let numlast;
+    onChildChanged(ref(db,'bool'),(resed)=>{
+        if(boolis){
+            toggleButton.classList.toggle('active')
+        }
+        if(resed.val() && numlast == 0){
+            datanumbermax(null)
+        }
+        ResOpen(resed.val())
+        showToast(resed.val()).then(() => {
         })
-        document.getElementById('inp_max').value = ''
+    })
+
+    onChildAdded(ref(db,'bool'),(resed)=>{
+        if(resed.val()){
+            toggleButton.classList.toggle('active')
+        }
+        ResOpen(resed.val())
+        showToast(resed.val()).then(() => {
+        })
+    })
+
+    onChildRemoved(ref(db,`user`),function(user){
+        document.getElementById(user.key).remove()
+        is(allvaluesearch)
     })
 
     onChildChanged(ref(db,'resmax'),(nummax) => {
         document.getElementById('num_resmax').innerHTML = nummax.val()
+        numlast = nummax.val()
     })
 
     onChildAdded(ref(db,'resmax'),(resed)=>{
         document.getElementById('num_resmax').innerHTML = resed.val()
+        numlast = resed.val()
     })
-
-
-    // let kina;
-    // let first;
-    // let elements = document.getElementsByTagName('*');
-    // function generateRandomEmail() {
-    //     const kk = ['qashqo','pinch','small','corsa','najar','chlapy',"King", "Queen",
-    //                 "Prince", "Princess", "Duke", "Duchess", "Earl", "Countess", "Baron",
-    //                 "Baroness", "Lord", "Lady", "Sir", "Madam", "Master", "Mistress", "Captain",
-    //                 "Commander", "Admiral", "General", "Colonel", "Lieutenant", "Sergeant", "Private",
-    //                 "Detective", "Sheriff", "Marshal", "Agent", "Doctor", "Professor", "Scientist", "Engineer",
-    //                 "Inventor", "Artist", "Writer", "Poet", "Musician", "Actor", "Director", "Producer", "Entrepreneur",
-    //                 "Philanthropist", "Activist", "Visionary", "Maverick", "Rebel", "Champion", "Hero", "Legend"];
-    //     const domains = ["gmail.com"]; // نطاقات البريد الإلكتروني المسموح بها
-    //     const names = ['ahmad','Ahmad','mohamed','moham','saly','sara','sandy','samir','tamey','tamor','torty',
-    //              'daran','rana1','rana15','zaid5','homam','samar','sawsan1','malak','nour','samera','saron',
-    //              'magd300','laith5','gamal10','hola5','shemaa','jamal','fefe22','abdol',"Adam", "Alice", "Ben",
-    //              "Catherine", "Charlie", "David", "Emma", "Frank", "Grace", "Henry", "Isabelle", "Jack", "James",
-    //              "Jasmine", "John", "Julia", "Katie", "Kevin", "Laura", "Leo", "Lily", "Lucas", "Maggie", "Matthew",
-    //              "Michael", "Molly", "Nathan", "Olivia", "Oscar", "Patrick", "Rachel", "Rebecca", "Richard", "Robert",
-    //              "Rose", "Ruby", "Ryan", "Samuel", "Sarah", "Sophie", "Steven", "Thomas", "Tina", "William",'salem5','Asha2001'];
-    //     const maxNumber = 9999;
-    //     const number = Math.floor(Math.random() * maxNumber);
-    //     const name = Math.random().toString(36).substring(2, 4);
-    //     const domain = domains[Math.floor(Math.random() * domains.length)];
-    //     const names1 = names[Math.floor(Math.random() * names.length)];
-    //     const kk1 = kk[Math.floor(Math.random() * kk.length)];
-    //     kina = kk1
-    //     first = names1
-    //     return names1 + '.' + name + number + "@" + domain;
-    // }
-    // const randomEmail = generateRandomEmail();
-    // const pass = 'Nour123456'
-
-    // for(let i = 0; i < elements.length; i++){
-
-    //     if(elements[i].id == 'firstName' 
-    //     && elements[i].localName == 'input')
-    //     {
-    //         elements[i].value = first;
-    //     }
-
-    //     if(elements[i].id == 'lastName' 
-    //     && elements[i].localName == 'input')
-    //     {
-    //         elements[i].value = kina;
-    //     }
-
-    //     if(elements[i].type == 'email' 
-    //     && elements[i].localName == 'input')
-    //     {
-    //         elements[i].value = randomEmail;
-    //     }
-
-    //     if(elements[i].type == 'password' 
-    //     && elements[i].localName == 'input')
-    //     {
-    //         elements[i].value = pass;
-    //     }
-
-    //     if(elements[i].innerHTML == 'التالي' 
-    //     && (elements[i].localName == 'span' || elements[i].localName == 'button'))
-    //     {
-    //         setTimeout(function(){
-    //             elements[i].click();
-    //         },500)
-    //     }
-    //     }
-
-// console.log(randomEmail);
-
-
-
-
-
-
-
-
-
-
-// setInterval(()=>{
-
-//     let isAutoRopot = false;
-//     let numreturn = 0;
-    
-//         numreturn++;
-//         let Email1 = '';
-//         let Password1 = '';
-    
-//         let numbottonNext = 0;
-//         let numelement = 0;
-        
-//         let elements = document.getElementsByTagName('*');
-//         let isEmail = false;
-//         let isPassword = false;
-        
-//         for(let i = 0; i < elements.length; i++){
-//             console.log(elements[39].innerHTML)
-    
-//             if(elements[i].type == 'email' 
-//             || elements[i].id == 'username' 
-//             || elements[i].name == 'username')
-//             {
-//                 if(elements[i].localName == 'input'){
-//                     elements[i].value = Email1;
-//                     isEmail = true;
-//                     isAutoRopot = true;
-//                 }
-//             }
-    
-//             if(elements[i].type == 'password' 
-//             || elements[i].id == 'password' 
-//             || elements[i].name == 'password')
-//             {
-//                 if(elements[i].localName == 'input'){
-//                     elements[i].value = Password1;
-//                     isPassword = true;
-//                     isAutoRopot = true;
-//                 }
-//             }
-    
-//             if(elements[i].innerHTML == 'تسجيل الدخول '
-//             || elements[i].innerHTML == ' تسجيل الدخول'
-//             || elements[i].innerHTML == ' تسجيل الدخول '
-//             || elements[i].innerHTML == 'تسجيل الدخول')
-//             {
-//                 if(isEmail && isPassword && elements[i].localName == 'button'){
-//                     setTimeout(()=>{
-//                         elements[i].click();
-//                     },1000)
-//                 }
-                
-//                 isAutoRopot = true;
-//             }
-    
-    
-//             if(elements[i].innerHTML == ' استمرار '
-//             || elements[i].innerHTML == 'استمرار '
-//             || elements[i].innerHTML == ' استمرار'
-//             || elements[i].innerHTML == 'استمرار'
-//             || elements[i].innerHTML == 'تأكيد الحجز والدفع'
-//             || elements[i].innerHTML == ' تأكيد الحجز والدفع'
-//             || elements[i].innerHTML == 'تأكيد الحجز والدفع '
-//             || elements[i].innerHTML == ' تأكيد الحجز والدفع '
-//             || elements[i].id == 'bottomNextLink')
-//             {
-//                 if(elements[i].localName == 'button'){
-//                     numelement = i;
-//                     numbottonNext++
-//                     if(numbottonNext >= 2){
-//                         setTimeout(()=>{
-//                             elements[i].click();
-//                             console.log('1')
-//                         },100)
-//                     }
-//                     else if(numbottonNext == 1 && numelement !== 0){
-//                         console.log('2')
-//                         setTimeout(()=>{
-//                         elements[numelement].click();
-//                         },100)
-//                     }
-//                 }
-//             }
-    
-//             if(elements[i].innerHTML == ' الحجز لي '
-//             || elements[i].innerHTML == 'الحجز لي '
-//             || elements[i].innerHTML == ' الحجز لي'
-//             || elements[i].innerHTML == 'الحجز لي'
-//             || elements[i].id == 'id1b')
-//             {
-//                 if(elements[i].localName == 'button'){
-//                     elements[i].click();
-//                 }
-//             }
-//         }
-//         console.log(elements[39])
-// },2000)
-
-
 
 
 </script>
