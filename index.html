@@ -411,13 +411,22 @@ navigator.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537
     onChildChanged(ref(db,'resmax'),(nummax) => {
         document.getElementById('num_resmax').innerHTML = nummax.val()
         numlast = nummax.val()
+        if(numlast == 0){
+            update(ref(db,'bool/'),{
+            'isopen':false,
+        })
+        }
     })
 
     onChildAdded(ref(db,'resmax'),(resed)=>{
         document.getElementById('num_resmax').innerHTML = resed.val()
         numlast = resed.val()
+        if(numlast == 0){
+            update(ref(db,'bool/'),{
+            'isopen':false,
+        })
+        }
     })
-
 
 </script>
 
