@@ -119,7 +119,7 @@ body{
 .card{
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    background:linear-gradient(#005ba595,#006769d7);
+    background:linear-gradient(#005ba595,#276270d7);
     width: 28%;
     margin: 1%;
     box-shadow: 2px 2px 10px #006570;
@@ -148,7 +148,6 @@ body{
     margin: auto;
     background-color: rgb(1, 68, 157);
     color: antiquewhite;
-    height: 22px;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
 }
@@ -162,7 +161,7 @@ body{
     margin: 8px;
     color: rgb(255, 255, 255);
 }
-#card_data h4:hover{
+#card_data h4:hover:not(#h4_1,.E_P){
     transition: 0.3s;
     background-color: rgb(235, 219, 73);
     color: #001a2d;
@@ -172,13 +171,12 @@ body{
     flex-flow: row;
     flex-wrap: wrap-reverse;
     justify-content: space-evenly;
-    margin-top: 25px;
 }
 #btn_card button{
     height: 27px;
 }
 .WhatsApp_card{
-    background-color: rgb(24, 90, 46);
+    background-color: rgba(24, 90, 63, 0.698);
     color: white;
     width: 50%;
     margin: auto;
@@ -188,7 +186,7 @@ body{
     background-color: rgb(6, 207, 6);
 }
 #done_card{
-    background-color: rgb(18, 61, 54);
+    background-color: rgb(0, 112, 127);
     color: white;
     width: 25%;
 }
@@ -207,14 +205,15 @@ body{
     background-color: red;
     color: white;
 }
-#copy_card{
+#sing{
     width:100%;
-    background-color: #a35100;
+    background:linear-gradient(rgb(4, 98, 4),rgb(1, 56, 14));
+    font-weight: 600;
     color: white;
 }
-#copy_card:hover{
-    transition: 0.4s;
-    background-color: #ff8000;
+#sing:hover{
+    background:linear-gradient(rgb(35, 112, 58),rgb(2, 206, 49));
+    font-weight: 600;
 }
 .sidebar {
     width: 19.5%;
