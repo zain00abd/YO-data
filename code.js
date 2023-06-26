@@ -5,15 +5,15 @@
     
     const app = initializeApp(Config);
     const db = getDatabase(app);
-    const dbRef = ref(db, 'user')
+    let dbRef = ref(db, 'user')
 
     let allvaluesearch = '';
     let pageshowdata = document.querySelector('.pagedata')
 
-    function is(value){
+    function is(value,idshow){
         let indexcard = 0;
         
-        onChildAdded(dbRef, (snapshot) => {
+        onChildAdded(idshow, (snapshot) => {
             const newData = snapshot.val()
             if(indexcard == 0){
                 pageshowdata.innerHTML = ''
@@ -35,8 +35,13 @@
             if(newData.Password !== undefined){
                 getpass = newData.Password
             }
+            let dis;
+            if(idshow._path.pieces_[0] == 'done'){
+                dis = 'none'
+            }
             
             if(newData.Firstname.toLowerCase().includes(value.toLowerCase()) || newData.Level.toLowerCase().includes(value.toLowerCase()) || newData.Dateexam.toLowerCase().includes(value.toLowerCase())){
+                
 
                 indexcard++
                 pageshowdata.innerHTML += `  
@@ -68,45 +73,52 @@
                         </div>
                         <div id="btn_card">
                             <button class="WhatsApp_card" data-key="${newData.Phone}">WhatsApp</button>
-                            <button id="done_card">Done</button>
+                            <button class="delete_card" style="display:${dis}" id="done" data-key='${snapshot.key}'>Done</button>
                             <button class="delete_card" id="delet" data-key='${snapshot.key}' data-name="${newData['Firstname']}">Delete</button>
                             <button class="delete_card" id="sing" data-key='${snapshot.key}'>Sign In Goethe</button>
                         </div>
                     </div>`
 
-
                         var delete_btn = document.querySelectorAll('.delete_card')
                         var whatsApp_btn = document.querySelectorAll('.WhatsApp_card')
                         var E_P = document.querySelectorAll('.E_P')
+
                         delete_btn.forEach(btn => {
                             btn.addEventListener('click',function(data){
+
                                 var btnid = data.target.getAttribute('id')
                                 var key = data.target.getAttribute('data-key')
                                 var name = data.target.getAttribute('data-name')
+                                console.log(btnid)
 
-                                if(btnid == 'delet'){ 
-
-                                    Swal.fire({
-                                        title: 'Are you sure?',
-                                        html:`user <b style="text-decoration: underline;">${name}</b> will be deleted!`,
-                                        icon: 'warning',
-                                        showCancelButton: true,
-                                        confirmButtonColor: '#3085d6',
-                                        cancelButtonColor: '#d33',
-                                        confirmButtonText: 'Yes, delete it!'
-                                    }).then((result) => {   
-                                        if (result.isConfirmed) {
-                                            remove(ref(db,`user/${key}`)).then(()=>{
-                                                Swal.fire(
-                                                    'Deleted!',
-                                                    'Your file has been deleted.',
-                                                    'success'
-                                                )
-                                                is('')
-                                            })  
-                                        }   
-                                    })
+                                let titleN;
+                                let htmlN;
+                                let ico;
+                                let botontext;
+                                let botoncolor;
+                                let Y1;
+                                let Y2;
+                                if(btnid == 'delet'){
+                                    Y1 = 'Deleted!'
+                                    Y2 = 'has been deleted successfully.'
+                                    botoncolor = '#3085d6'
+                                    botontext = 'Yes, delete it!'
+                                    ico = 'warning'
+                                    titleN = 'Are you sure?'
+                                    htmlN = `user <b style="text-decoration: underline;">${name}</b> will be deleted!`
+                                    editcard(btnid)
                                 }
+                                else if(btnid == 'done'){
+                                    Y1 = 'Done!'
+                                    Y2 = 'Added to the list of achievements'
+                                    botontext = 'Yes'
+                                    botoncolor = '#1abb73'
+                                    ico = 'info'
+                                    titleN = 'Transfer to the achievements page?'
+                                    htmlN = `Click to confirm`
+                                    editcard(btnid)
+                                }
+                                
                                 else if(btnid == 'sing'){
                                     onChildAdded(ref(db,`user/${key}`), (data6) =>{
                                         update(ref(db,`sing/${data6.key}`),{
@@ -115,6 +127,41 @@
                                         window.open('https://www.goethe.de/ins/jo/ar/spr/prf/gzsd1.cfm', '_blank');
                                     })
                                 }
+
+                                function editcard(idedet){
+
+                                    Swal.fire({
+                                        title: `${titleN}`,
+                                        html:`${htmlN}`,
+                                        icon: `${ico}`,
+                                        showCancelButton: true,
+                                        confirmButtonColor: `${botoncolor}`,
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: `${botontext}`
+                                    }).then((result) => {   
+                                        if (result.isConfirmed) {
+                                            if(idedet == 'done'){
+                                                get(ref(db,`user/${key}`)).then((data) =>{
+                                                    push(ref(db,`done`),data.val()).then(()=>{
+                                                        deleti()
+                                                    })
+                                                })
+                                            }
+                                            else{ deleti(); }
+                                            function deleti(){
+                                                remove(ref(db,`${idshow._path.pieces_[0]}/${key}`)).then(()=>{
+                                                    Swal.fire(
+                                                        `${Y1}`,
+                                                        `${Y2}`,
+                                                        'success'
+                                                    )
+                                                    is('',dbRef)
+                                                })  
+                                            }
+                                        }   
+                                    })
+                                }
+
                             })
                             
                         }) 
@@ -152,7 +199,7 @@
             document.getElementById('num_index').innerHTML = indexcard
         })
     }
-    is('')
+    is('',dbRef)
 
     let po = 0;
     onChildAdded(dbRef, (chadata) => {
@@ -267,6 +314,11 @@
     }
     zoom()
 
+    document.getElementById('Done').addEventListener('click',() =>{
+        document.getElementsByTagName('body')[0].style.backgroundColor = '#00ff40'
+        dbRef = ref(db,'done')
+        is('',dbRef)
+    })
 
 
     const toggleButton = document.querySelector('.toggle-button');
@@ -289,16 +341,13 @@
     let inp_search = document.getElementById('inp_search')
     inp_search.onkeyup = () =>{
         allvaluesearch = inp_search.value
-        is(inp_search.value)
+        is(inp_search.value,dbRef)
         if(inp_search.value == ''){
-            is('')
+            is('',dbRef)
         }
     }
     inp_search.onblur = () =>{
-        is('')
-    }
-    function reply(){
-        is(allvaluesearch)
+        is('',dbRef)
     }
 
     let oldbtn = '';
@@ -306,7 +355,7 @@
     btnlevel.forEach(btn1 =>{
         btn1.addEventListener('click', (data1) =>{
             allvaluesearch = btn1.id
-            is(btn1.id)
+            is(btn1.id,dbRef)
             if(oldbtn !== ''){
                 document.getElementById(oldbtn).style.backgroundColor = '';
                 document.getElementById(oldbtn).style.color = ''

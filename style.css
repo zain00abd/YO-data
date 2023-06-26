@@ -180,17 +180,18 @@ body{
     color: white;
     width: 50%;
     margin: auto;
+    flex-grow: 1;
 }
 .WhatsApp_card:hover{
     transition: 0.4s;
     background-color: rgb(6, 207, 6);
 }
-#done_card{
+#done{
     background-color: rgb(0, 112, 127);
     color: white;
     width: 25%;
 }
-#done_card:hover{
+#done:hover{
     transition: 0.4s;
     background-color: #01a169;
 }
@@ -323,7 +324,7 @@ body{
     overflow: hidden;
     max-height: 0;
     transition: max-height 0.4s ease-out;
-    background-color: #7e808187;
+    background-color: #7e7d7d87;
 } 
   
 #menu1 li{
