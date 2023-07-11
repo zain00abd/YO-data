@@ -9,6 +9,7 @@ button{
 }
 body{
     background:linear-gradient(to right,#7ad5f9b5,#54fbeaa3);
+    background-image: url(kol.png);
 }
 .gr{
     background-color: #002163;
